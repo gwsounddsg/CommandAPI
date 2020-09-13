@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using CommandAPI.Models;
+using Npgsql;
 
 
 namespace CommandAPI
@@ -23,10 +24,18 @@ namespace CommandAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // gets username and password from secret file
+            var builder = new NpgsqlConnectionStringBuilder()
+            {
+                ConnectionString = Configuration.GetConnectionString("PostgreSqlConnection"),
+                Username = Configuration["UserID"],
+                Password = Configuration["Password"]
+            };
+
             // connects our CommandContext to our db
             services.AddDbContext<CommandContext>(opt => 
             {
-                opt.UseNpgsql(Configuration.GetConnectionString("PostgreSqlConnection"));
+                opt.UseNpgsql(builder.ConnectionString);
             });
             
             services.AddControllers();
