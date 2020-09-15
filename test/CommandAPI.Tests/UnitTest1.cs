@@ -1,14 +1,15 @@
 using System;
-using Xunit;
+using NUnit.Framework;
 
 namespace CommandAPI.Tests
 {
+    [TestFixture]
     public class UnitTest1
     {
-        [Fact]
-        public void Test1()
+        [SetUp]
+        public void Setup()
         {
-
+            
         }
     }
 }
