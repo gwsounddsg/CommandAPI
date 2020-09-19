@@ -2,6 +2,9 @@ using NUnit.Framework;
 using CommandAPI.Controllers;
 using CommandAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 
 namespace CommandAPI.Tests
@@ -49,5 +52,69 @@ namespace CommandAPI.Tests
             // verify
             Assert.IsEmpty(result.Value);
         }
+
+
+        [Test]
+        public void GetCommandItems_OneItem()
+        {
+            // prep
+            const int size = 1;
+            CreateCommands(size);
+
+            // call
+            var result = controller.GetCommandItems();
+
+            // verify
+            Assert.That(result.Value.Count() == size);
+        }
+
+
+        [Test]
+        public void GetCommandItems_TwoItems()
+        {
+            // prep
+            const int size = 2;
+            CreateCommands(size);
+
+            // call
+            var result = controller.GetCommandItems();
+
+            // verify
+            Assert.That(result.Value.Count() == size);
+        }
+
+
+        [Test]
+        public void GetCommandItems_ReturnsCorrectType()
+        {
+            var result = controller.GetCommandItems();
+            Assert.That(result, Is.TypeOf<ActionResult<IEnumerable<Command>>>());
+        }
+
+
+
+
+
+        #region Utility
+
+
+        private void CreateCommands(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var command = new Command
+                {
+                    HowTo = "Do Something",
+                    Platform = "Some Platform",
+                    CommandLine = count.ToString()
+                };
+
+                dbContext.CommandItems.Add(command);
+            }
+
+            dbContext.SaveChanges();
+        }
+
+        #endregion
     }
 }
