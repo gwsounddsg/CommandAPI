@@ -100,6 +100,14 @@ namespace CommandAPI.Tests
         }
 
 
+        [Test]
+        public void GetCommandItem_404()
+        {
+            var result = controller.GetCommandItem(0);
+            Assert.That(result.Result, Is.TypeOf<NotFoundResult>());
+        }
+
+
 
 
 

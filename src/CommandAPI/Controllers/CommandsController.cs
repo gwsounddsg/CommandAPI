@@ -33,6 +33,7 @@ namespace CommandAPI.Controllers
         public ActionResult<Command> GetCommandItem(int id)
         {
             var item = _context.CommandItems.Find(id);
+            if (item == null) return NotFound();
             return item;
         }
     }
