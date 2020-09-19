@@ -6,7 +6,7 @@ using CommandAPI.Models;
 
 
 
-namespace CommandAPI.Controller
+namespace CommandAPI.Controllers
 {
 
     [ApiController]
