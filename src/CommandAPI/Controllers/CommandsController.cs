@@ -27,5 +27,13 @@ namespace CommandAPI.Controllers
         {
             return _context.CommandItems;
         }
+
+
+        [HttpGet("{id}")]
+        public ActionResult<Command> GetCommandItem(int id)
+        {
+            var item = _context.CommandItems.Find(id);
+            return item;
+        }
     }
 }

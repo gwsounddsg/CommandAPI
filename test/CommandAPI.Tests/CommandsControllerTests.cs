@@ -92,6 +92,14 @@ namespace CommandAPI.Tests
         }
 
 
+        [Test]
+        public void GetCommandItem_BadID_Null()
+        {
+            var result = controller.GetCommandItem(0);
+            Assert.Null(result.Value);
+        }
+
+
 
 
 
