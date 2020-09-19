@@ -230,6 +230,60 @@ namespace CommandAPI.Tests
         }
 
 
+        [Test]
+        public void DeleteCommandItem_Decriment()
+        {
+            // prep
+            var commands = CreateCommands(1);
+            var cmdId = commands[0].Id;
+            var objCount = dbContext.CommandItems.Count();
+
+            // call
+            controller.DeleteCommandItem(cmdId);
+
+            // verify
+            Assert.That(objCount - 1 == dbContext.CommandItems.Count());
+        }
+
+
+        [Test]
+        public void DeleteCommandItem_200()
+        {
+            // prep
+            var commands = CreateCommands(1);
+
+            // call
+            var result = controller.DeleteCommandItem(commands[0].Id);
+
+            // verify
+            Assert.Null(result.Result);
+        }
+
+
+        [Test]
+        public void DeleteCommandItem_404()
+        {
+            var result = controller.DeleteCommandItem(-1);
+            Assert.That(result.Result, Is.TypeOf<NotFoundResult>());
+        }
+
+
+        [Test]
+        public void DeleteCommandItem_NoChange()
+        {
+            // prep
+            var commands = CreateCommands(1);
+            var cmdId = commands[0].Id;
+            var objCount = dbContext.CommandItems.Count();
+
+            // call
+            var result = controller.DeleteCommandItem(cmdId + 1);
+
+            // verify
+            Assert.That(dbContext.CommandItems.Count() == objCount);
+        }
+
+
 
 
 
