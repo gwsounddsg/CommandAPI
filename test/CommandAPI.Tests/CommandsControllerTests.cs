@@ -108,14 +108,46 @@ namespace CommandAPI.Tests
         }
 
 
+        [Test]
+        public void GetCommandItem_CorrectType()
+        {
+            // prep
+            const int size = 1;
+            var commands = CreateCommands(size);
+
+            // call
+            var result = controller.GetCommandItem(commands[0].Id);
+
+            // verify
+            Assert.That(result, Is.TypeOf<ActionResult<Command>>());
+        }
+
+
+        [Test]
+        public void GetCommandItem_CorrectResource()
+        {
+            // prep
+            const int size = 1;
+            var commands = CreateCommands(size);
+
+            // call
+            var result = controller.GetCommandItem(commands[0].Id);
+
+            // verify
+            Assert.That(result.Value.Id == commands[0].Id);
+        }
+
+
 
 
 
         #region Utility
 
 
-        private void CreateCommands(int count)
+        private IList<Command> CreateCommands(int count)
         {
+            var commands = new List<Command>();
+
             for (int i = 0; i < count; i++)
             {
                 var command = new Command
@@ -126,9 +158,11 @@ namespace CommandAPI.Tests
                 };
 
                 dbContext.CommandItems.Add(command);
+                commands.Add(command);
             }
 
             dbContext.SaveChanges();
+            return commands;
         }
 
         #endregion
