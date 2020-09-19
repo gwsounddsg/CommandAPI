@@ -1,15 +1,18 @@
-using System;
 using NUnit.Framework;
 
 namespace CommandAPI.Tests
 {
-    [TestFixture]
-    public class UnitTest1
+    public class Tests
     {
         [SetUp]
         public void Setup()
         {
-            
+        }
+
+        [Test]
+        public void Test1()
+        {
+            Assert.Pass();
         }
     }
 }
