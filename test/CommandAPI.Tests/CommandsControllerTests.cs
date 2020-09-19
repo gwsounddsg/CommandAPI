@@ -168,6 +168,68 @@ namespace CommandAPI.Tests
         }
 
 
+        [Test]
+        public void PutCommandItem_AttributeUpdated()
+        {
+            // prep
+            var commands = CreateCommands(1);
+            commands[0].HowTo = "UPDATED";
+
+            // call
+            controller.PutCommandItem(commands[0].Id, commands[0]);
+            var result = dbContext.CommandItems.Find(commands[0].Id);
+
+            // verify
+            Assert.That(commands[0].HowTo == result.HowTo);
+        }
+
+
+        [Test]
+        public void PutCommandItem_204()
+        {
+            // prep
+            var commands = CreateCommands(1);
+            commands[0].HowTo = "UPDATED";
+
+            // call
+            var result = controller.PutCommandItem(commands[0].Id, commands[0]);
+
+            // verify
+            Assert.That(result, Is.TypeOf<NoContentResult>());
+        }
+
+
+        [Test]
+        public void PutCommandItem_400()
+        {
+            // prep
+            var commands = CreateCommands(1);
+            commands[0].HowTo = "UPDATED";
+
+            // call
+            var result = controller.PutCommandItem(commands[0].Id + 1, commands[0]);
+
+            // verify
+            Assert.That(result, Is.TypeOf<BadRequestResult>());
+        }
+
+
+        [Test]
+        public void PutCommandItem_Unchanged()
+        {
+            // prep
+            var commands = CreateCommands(2);
+            commands[1].Id = commands[0].Id + 1;
+
+            // call
+            controller.PutCommandItem(commands[0].Id + 1, commands[1]);
+            var result = dbContext.CommandItems.Find(commands[0].Id);
+
+            // verify
+            Assert.That(commands[0].HowTo == result.HowTo);
+        }
+
+
 
 
 
