@@ -36,5 +36,23 @@ namespace CommandAPI.Controllers
             if (item == null) return NotFound();
             return item;
         }
+
+
+        [HttpPost]
+        public ActionResult<Command> PostCommandItem(Command command)
+        {
+            _context.CommandItems.Add(command);
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return CreatedAtAction("GetCommandItem", new Command{Id = command.Id}, command);
+        }
     }
 }

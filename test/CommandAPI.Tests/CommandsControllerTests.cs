@@ -138,6 +138,36 @@ namespace CommandAPI.Tests
         }
 
 
+        [Test]
+        public void PostCommandItem_Increment()
+        {
+            // prep
+            var command = NewCommand("something");
+            var oldCount = dbContext.CommandItems.Count();
+
+            // call
+            var result = controller.PostCommandItem(command);
+
+            // verify
+            Assert.That(oldCount + 1 == dbContext.CommandItems.Count());
+        }
+
+
+        [Test]
+        public void PostCommandItem_201()
+        {
+            // prep
+            var command = NewCommand("something");
+            var oldCount = dbContext.CommandItems.Count();
+
+            // call
+            var result = controller.PostCommandItem(command);
+
+            // verify
+            Assert.That(result.Result, Is.TypeOf<CreatedAtActionResult>());
+        }
+
+
 
 
 
@@ -150,19 +180,26 @@ namespace CommandAPI.Tests
 
             for (int i = 0; i < count; i++)
             {
-                var command = new Command
-                {
-                    HowTo = "Do Something",
-                    Platform = "Some Platform",
-                    CommandLine = count.ToString()
-                };
-
+                var command = NewCommand(i.ToString());
                 dbContext.CommandItems.Add(command);
                 commands.Add(command);
             }
 
             dbContext.SaveChanges();
             return commands;
+        }
+
+
+        private Command NewCommand(string commandLine)
+        {
+            var command = new Command
+            {
+                HowTo = "Do Something",
+                Platform = "Some Platform",
+                CommandLine = commandLine
+            };
+
+            return command;
         }
 
         #endregion
